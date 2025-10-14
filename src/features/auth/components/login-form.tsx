@@ -10,10 +10,9 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
-import { EyeIcon } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 
 const loginSchema = z.object({
@@ -109,7 +108,7 @@ const LoginForm = () => {
                                     />
 
                                     <Button type="submit" className="w-full" disabled={isPending}>
-                                        Login
+                                        {isPending ? <Loader2 className="animate-spin" /> : "Login"}
                                     </Button>
                                 </div>
 
