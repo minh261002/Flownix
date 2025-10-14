@@ -13,6 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { EyeIcon } from "lucide-react";
 
 
 const loginSchema = z.object({
@@ -67,10 +68,12 @@ const LoginForm = () => {
                             <div className="grid gap-6">
                                 <div className="flex flex-col gap-4">
                                     <Button variant={"outline"} className="w-full" type="button" disabled={isPending}>
+                                        <Image src="/github.svg" alt="Github" width={20} height={20} />
                                         Continue with Github
                                     </Button>
 
                                     <Button variant={"outline"} className="w-full" type="button" disabled={isPending}>
+                                        <Image src="/google.svg" alt="Google" width={20} height={20} />
                                         Continue with Google
                                     </Button>
                                 </div>
@@ -97,7 +100,7 @@ const LoginForm = () => {
                                             <FormItem>
 
                                                 <FormLabel>Password</FormLabel>
-                                                <FormControl>
+                                                <FormControl className="relative">
                                                     <Input type="password" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
@@ -111,7 +114,7 @@ const LoginForm = () => {
                                 </div>
 
                                 <div className="text-center text-sm">
-                                    Don't have an account? <Link href="/signup" className="underline underline-offset-4">Sign up</Link>
+                                    Don't have an account? <Link href="/sign-up" className="underline underline-offset-4">Sign up</Link>
                                 </div>
                             </div>
                         </form>
