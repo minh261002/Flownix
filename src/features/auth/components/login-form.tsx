@@ -12,6 +12,7 @@ import { Card, CardDescription, CardContent, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
 
 
 const loginSchema = z.object({
@@ -33,7 +34,18 @@ const LoginForm = () => {
     })
 
     const onSubmit = async (values: LoginFormValues) => {
-        console.log(values)
+        await authClient.signIn.email({
+            email: values.email,
+            password: values.password,
+            callbackURL: '/'
+        }, {
+            onSuccess: () => {
+                router.push("/");
+            },
+            onError: (ctx) => {
+                toast.error(ctx.error.message);
+            }
+        })
     }
 
     const isPending = form.formState.isSubmitting;

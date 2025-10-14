@@ -12,9 +12,11 @@ import { Card, CardDescription, CardContent, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
 
 
 const signupSchema = z.object({
+    name: z.string().min(1, "Name is required"),
     email: z.email("Please enter a valid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string()
@@ -31,6 +33,7 @@ const SignUpForm = () => {
     const form = useForm<SignUpFormValues>({
         resolver: zodResolver(signupSchema),
         defaultValues: {
+            name: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -38,7 +41,22 @@ const SignUpForm = () => {
     })
 
     const onSubmit = async (values: SignUpFormValues) => {
-        console.log(values)
+        await authClient.signUp.email(
+            {
+                name: values.name,
+                email: values.email,
+                password: values.password,
+                callbackURL: '/'
+            },
+            {
+                onSuccess: () => {
+                    router.push("/");
+                },
+                onError: (ctx) => {
+                    toast.error(ctx.error.message);
+                }
+            }
+        )
     }
 
     const isPending = form.formState.isSubmitting;
@@ -69,6 +87,20 @@ const SignUpForm = () => {
                                 </div>
 
                                 <div className="grid gap-6">
+                                    <FormField
+                                        control={form.control}
+                                        name="name"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Name</FormLabel>
+                                                <FormControl>
+                                                    <Input {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
                                     <FormField
                                         control={form.control}
                                         name="email"
